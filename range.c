@@ -25,7 +25,7 @@ range_bool range_in_range(range_cont_t *cont, range_t *range, void *k) {
 	if (range->min == NULL || range->max == NULL)
 		return RANGE_TRUE;
 
-	tmp = cont->cmp(range->min, k, cont->cmp_data);
+	tmp = cont->cmp(range->min, k, cont->data);
 
 	if (tmp == 0)
 		return RANGE_TRUE;
@@ -33,7 +33,7 @@ range_bool range_in_range(range_cont_t *cont, range_t *range, void *k) {
 	if (tmp < 0)
 		return RANGE_FALSE;
 
-	tmp = cont->cmp(range->max, k, cont->cmp_data);
+	tmp = cont->cmp(range->max, k, cont->data);
 
 	if (tmp == 0)
 		return RANGE_TRUE;
@@ -49,10 +49,10 @@ range_status range_insert(range_cont_t *cont, range_t *range, void *k) {
 	int cres_max = -1;
 
 	if (range->min != NULL)
-		cres_min = cont->cmp(range->min, k, cont->cmp_data);
+		cres_min = cont->cmp(range->min, k, cont->data);
 
 	if (range->max != NULL)
-		cres_max = cont->cmp(range->max, k, cont->cmp_data);
+		cres_max = cont->cmp(range->max, k, cont->data);
 
 	// key equal to min or max key of this range
 	// do nothing
@@ -96,7 +96,7 @@ void range_cont_set_cmp_func(range_cont_t *cont,
 	int (cmp)(void *a, void *b, void *data), void *data) {
 
 	cont->cmp = cmp;
-	cont->cmp_data = data;
+	cont->data = data;
 }
 
 range_status range_cont_add_range(range_cont_t *cont, range_t *range) {
@@ -142,14 +142,14 @@ range_status range_cont_insert(range_cont_t *cont, void *k) {
 	if (range == NULL) {
 		tmp_range = cont->ranges[0];
 
-		if (cont->cmp(tmp_range->min, k, cont->cmp_data) > 0)
+		if (cont->cmp(tmp_range->min, k, cont->data) > 0)
 			range = tmp_range;
 	}
 
 	if (range == NULL) {
 		tmp_range = cont->ranges[cont->num_ranges - 1];
 
-		if (cont->cmp(tmp_range->max, k, cont->cmp_data) < 0)
+		if (cont->cmp(tmp_range->max, k, cont->data) < 0)
 			range = tmp_range;
 	}
 

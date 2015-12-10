@@ -34,7 +34,7 @@ typedef struct {
 	int num_ranges;
 
 	range_cmp_fn cmp;
-	void *cmp_data;
+	void *data;
 } range_cont_t;
 
 typedef enum {
